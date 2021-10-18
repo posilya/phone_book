@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@400&display=swap');
+
+@media (min-width: 1366px) {
+	:root {
+		--max-width: 1200px;
+		--margin: auto;
+	}
+}
+
+@media (min-width: 1024px) and (max-width: 1365px) {
+	:root {
+		--max-width: 992px;
+		--margin: 20px;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+	:root {
+		--max-width: 768px;
+		--margin: 15px;
+	}
+}
+
+@media (max-width: 767px) {
+	:root {
+		--max-width: 360px;
+		--margin: 10px;
+	}
+}
+
+:root {
+	--font: 'Commissioner', system-ui, sans-serif;
+	--font-weight: 400;
+}
+
+* {
+	font-family: var(--font);
+	font-weight: var(--font-weight);
+	font-size: 20px;
+	
+	--dark: #24292f;
+	--dark-blur: rgba(235, 240, 245, 0.85);
+	--gray: #d9d9d9;
+	--white: rgba(255, 255, 255, .9);
+}
+
+a[href^='tel:'] {
+	--color: 0, 133, 60;
+}
+
+a[href^='delete'] {
+	--color: 226, 21, 21;
+}
+
+a[href^='edit'] {
+	--color: 225, 160, 0;
+}
+
+a[href='add'] {
+	--color: 5, 84, 204;
+}
+
+body {
+	padding-bottom: 10px;
+}
+
+body > * {
+	max-width: var(--max-width);
+	margin: 0 var(--margin);
+}
+
+h1 {
+	font-weight: var(--font-weight);
+	font-size: 40px;
+}
+
+table {
+	min-width: 100%;
+	border: none;
+    border-collapse: collapse;
+	margin-bottom: 10px;
+}
+
+tr:first-child, tr:last-child {
+	border: none;
+}
+
+tr {
+	border-bottom: solid var(--gray) 1px;
+}
+
+th {
+	padding: 10px;
+	text-align: left;
+	font-weight: var(--font-weight);
+	font-size: 24px !important;
+	background-color: var(--dark-blur);
+	position: sticky;
+    position: -webkit-sticky;
+	top: 0;
+	-webkit-backdrop-filter: blur(7px);
+    backdrop-filter: blur(7px);
+}
+
+td {
+	padding: 8px;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
+a {
+	padding: 2px 6px 3px 6px;
+	border-radius: 8px;
+	transition: color .2s,
+		background-color .2s;
+}
+
+a:hover {
+	color: rgb(var(--color));
+	background-color: rgba(var(--color), .25);
+}
+
+a:active {
+	color: rgb(var(--color));
+	background-color: rgba(var(--color), .4);
+}
+
+a[href='add'] {
+	color: rgb(var(--color));
+	background-color: rgba(var(--color), .25);
+}
+
+a:hover {
+	color: rgb(var(--color));
+	background-color: rgba(var(--color), .4);
+}
+
+a:active {
+	color: rgb(var(--color));
+	background-color: rgba(var(--color), .5);
+}
