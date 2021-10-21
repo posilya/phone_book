@@ -3,7 +3,7 @@ h.set('add', 'Добавить контакт');
 h.set('edit', 'Изменить контакт');
 h.set('delete', 'Удалить контакт?');
 
-function api_send(name, phone, note, db) {
+function api_send(name, phone, note, id) {
 	const request = new XMLHttpRequest();
 
 	let data = new FormData();
@@ -13,12 +13,33 @@ function api_send(name, phone, note, db) {
 
 
 	let url;
-	if (db == -1) {
+	if (id == -1) {
 		url = 'api/add';
 	} else {
 		url = 'api/edit';
-		data.append('id', db);
+		data.append('id', id);
 	}
+
+	request.open('POST', url);
+	request.send(data);
+
+	request.onload = function() {
+		if (request.response == 'ok') {
+			close_popup();
+		} else {
+			console.log('Ошибка при записи в БД');
+			//todo сделать красиво
+		}
+	};
+}
+
+function api_delete(id) {
+	const request = new XMLHttpRequest();
+
+	let data = new FormData();
+	data.append('id', id);
+
+	let url = 'api/delete';
 
 	request.open('POST', url);
 	request.send(data);
@@ -95,6 +116,10 @@ function add_popup(act, db=-1) {
 		popup.innerHTML += `
 			<a class="delete">Удалить</a><a class="drop">Отмена</a>
 		`
+
+		popup.querySelector('.delete').onclick = function() {
+			api_delete(db);
+		}
 	}
 
 	popup.querySelector('.cancel, .drop').onclick = function() {
