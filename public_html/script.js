@@ -3,6 +3,36 @@ h.set('add', 'Добавить контакт');
 h.set('edit', 'Изменить контакт');
 h.set('delete', 'Удалить контакт?');
 
+function api_send(name, phone, note, db) {
+	const request = new XMLHttpRequest();
+
+	let data = new FormData();
+	data.append('name', name);
+	data.append('phone', phone);
+	data.append('note', note);
+
+
+	let url;
+	if (db == -1) {
+		url = 'api/add';
+	} else {
+		url = 'api/edit';
+		data.append('id', db);
+	}
+
+	request.open('POST', url);
+	request.send(data);
+
+	request.onload = function() {
+		if (request.response == 'ok') {
+			close_popup();
+		} else {
+			console.log('Ошибка при записи в БД');
+			//todo сделать красиво
+		}
+	};
+}
+
 function add_popup(act, db=-1) {
 	document.body.classList.add('no-scroll');
 
@@ -23,22 +53,24 @@ function add_popup(act, db=-1) {
 
 	if (act == 'edit' || act == 'add') {
 		popup.innerHTML += `
-			<div>
-				<label for="name">ФИО</label>
-				<input type="text" id="name" value="${values[0]}">
-			</div>
+			<form id="form">
+				<div>
+					<label for="name">ФИО</label>
+					<input type="text" id="name" value="${values[0]}">
+				</div>
 
-			<div>
-				<label for="phone">Телефон</label>
-				<input type="tel" id="phone" value="${values[1]}">
-			</div>
+				<div>
+					<label for="phone">Телефон</label>
+					<input type="tel" id="phone" value="${values[1]}">
+				</div>
 
-			<div>
-				<label for="note">Кем приходится</label>
-				<input type="text" id="note" value="${values[2]}">
-			</div>
+				<div>
+					<label for="note">Кем приходится</label>
+					<input type="text" id="note" value="${values[2]}">
+				</div>
+			</form>
 
-			<a class="${act == 'add' ? 'save' : 'update'}">Сохранить</a><a class="cancel">Отмена</a>
+			<a class="save">Сохранить</a><a class="cancel">Отмена</a>
 		`
 
 		let name = popup.querySelector('#name');
@@ -54,6 +86,10 @@ function add_popup(act, db=-1) {
 		let note = popup.querySelector('#note');
 		note.oninput = function() {
 			note.value = note.value.slice(0, 255);
+		};
+
+		popup.querySelector('.save').onclick = function() {
+			api_send(name.value, phone.value, note.value, db);
 		};
 	} else {
 		popup.innerHTML += `

@@ -56,7 +56,7 @@ a[href^='tel:'] {
 	--color: 225, 160, 0;
 }
 
-.add, .update, .save, .drop {
+.add, .save, .drop {
 	--color: 5, 84, 204;
 }
 
