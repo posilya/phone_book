@@ -3,6 +3,40 @@ h.set('add', 'Добавить контакт');
 h.set('edit', 'Изменить контакт');
 h.set('delete', 'Удалить контакт?');
 
+function update_table() {
+	const request = new XMLHttpRequest();
+
+	url = 'api/get';
+
+	request.open('GET', url);
+	request.send();
+
+	request.onload = function() {
+		let data = JSON.parse(request.response);
+		console.log(data);
+
+
+		document.querySelectorAll('tr[db]').forEach(function (node) {
+			node.remove();
+		});
+
+		table = document.getElementsByTagName('tbody')[0];
+		data.forEach(function (contact) {
+			let row = document.createElement('tr');
+			row.setAttribute('db', contact.id);
+
+			row.innerHTML = '<td>' + contact.name + '</td>' +
+				'<td><a href="tel:' + contact.phone + '">'  + contact.phone +  '</a></td>' +
+				'<td>' + contact.note + '</td>' +
+				'<td><a class="delete">Удалить</a> / <a class="edit">Редактировать</a></td>';
+
+			table.append(row);
+		});
+
+		add_onclick();
+	};
+}
+
 function api_send(name, phone, note, id) {
 	const request = new XMLHttpRequest();
 
@@ -10,7 +44,6 @@ function api_send(name, phone, note, id) {
 	data.append('name', name);
 	data.append('phone', phone);
 	data.append('note', note);
-
 
 	let url;
 	if (id == -1) {
@@ -131,6 +164,7 @@ function add_popup(act, db=-1) {
 
 function close_popup() {
 	document.body.classList.remove('no-scroll');
+	update_table();
 	document.querySelector('.popup-bg').remove();
 }
 
@@ -147,17 +181,21 @@ function get_values(db) {
 	return r;
 }
 
-document.querySelectorAll('.delete').forEach(function(elem) {
-	elem.onclick = function() {
-		add_popup('delete',  elem.parentNode.parentNode.getAttribute('db'));
-	};
-});
+function add_onclick() {
+	document.querySelectorAll('.delete').forEach(function(elem) {
+		elem.onclick = function() {
+			add_popup('delete',  elem.parentNode.parentNode.getAttribute('db'));
+		};
+	});
+	
+	document.querySelectorAll('.edit').forEach(function(elem) {
+		elem.onclick = function() {
+			add_popup('edit', elem.parentNode.parentNode.getAttribute('db'));
+		};
+	});	
+}
 
-document.querySelectorAll('.edit').forEach(function(elem) {
-	elem.onclick = function() {
-		add_popup('edit', elem.parentNode.parentNode.getAttribute('db'));
-	};
-});
+add_onclick();
 
 document.getElementsByClassName('add')[0].onclick = function() {
 	add_popup('add');
