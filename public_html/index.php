@@ -1,3 +1,7 @@
+<?php
+require_once(realpath('../db_connect.php'));
+?>
+
 <!DOCTYPE html>
 <html lang="ru">
 	<head>
