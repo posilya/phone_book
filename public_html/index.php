@@ -8,7 +8,7 @@ require_once(realpath('../db_connect.php'));
 		<title>Телефонный справочник</title>
 		<link rel="stylesheet" href="style.css">
 	</head>
-	<body></body>
+	<body>
 		<header>
 			<h1>Телефонный справочник</h1>
 		</header>
